@@ -18,26 +18,11 @@ function Button.new(x, y, width, height, text, callback, basicColor, pressedColo
     self.pressedColor = pressedColor or {0.2, 0.2, 0.2}
     self.hoveredColor = hoveredColor or {0.3, 0.3, 0.3}
     self.borderColor = borderColor or {0.15, 0.15, 0.15}
-    self.textColor = textColor or {0.85, 0.85, 0.85}  -- Исправлен: был слишком темный
+    self.textColor = textColor or {0.15, 0.15, 0.15}
 
     self.enabled = true
-    
     self.setEnabled = function(btn, enabled)
         btn.enabled = enabled
-    end
-    
-    self.setPosition = function(btn, newX, newY)
-        btn.x = newX
-        btn.y = newY
-    end
-    
-    self.getPosition = function(btn)
-        return btn.x, btn.y
-    end
-    
-    self.setSize = function(btn, newWidth, newHeight)
-        btn.width = newWidth
-        btn.height = newHeight
     end
 
     self.update = function(btn)
@@ -48,22 +33,18 @@ function Button.new(x, y, width, height, text, callback, basicColor, pressedColo
         if not btn.enabled then
             return
         end
-        
         if btn.isPressed and not love.mouse.isDown(1) then
             btn.isPressed = false
             if btn.isHovered then
                 btn.callback()
             end
-        elseif not btn.isPressed and love.mouse.isDown(1) and btn.isHovered then
+        elseif love.mouse.isDown(1) and btn.isHovered then
             btn.isPressed = true
         end
     end
 
     self.draw = function(btn)
-        if not btn.enabled and btn.basicColor then
-            local gray = (btn.basicColor[1] + btn.basicColor[2] + btn.basicColor[3]) / 3
-            love.graphics.setColor(gray * 0.6, gray * 0.6, gray * 0.6)
-        elseif btn.isPressed then
+        if btn.isPressed then
             love.graphics.setColor(btn.pressedColor)
         elseif btn.isHovered then
             love.graphics.setColor(btn.hoveredColor)
@@ -73,9 +54,8 @@ function Button.new(x, y, width, height, text, callback, basicColor, pressedColo
         love.graphics.rectangle("fill", btn.x, btn.y, btn.width, btn.height)
         
         love.graphics.setColor(btn.textColor)
-        local font = love.graphics.getFont()
-        local tw = font:getWidth(btn.text)
-        local th = font:getHeight()
+        local tw = love.graphics.getFont():getWidth(btn.text)
+        local th = love.graphics.getFont():getHeight()
         love.graphics.print(btn.text,
             btn.x + (btn.width - tw) / 2,
             btn.y + (btn.height - th) / 2)
@@ -88,6 +68,27 @@ function Button.new(x, y, width, height, text, callback, basicColor, pressedColo
 end
 
 return Button
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
